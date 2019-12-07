@@ -1,14 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import positions from '../../data/maps.js';
 
 
 const Map = props => {
 
+  useEffect(() => {
+    window.addEventListener("keydown", pressedKey);
+
+    return () => {
+      window.removeEventListener("keydown", pressedKey);
+    };
+  }, [])
+
+  const pressedKey = event => {
+    switch (event.keyCode) {
+      case 37:
+        moveLeft();
+        break;
+      case 38:
+        moveUp();
+        break;
+      case 39:
+        moveRight();
+        break;
+      case 40:
+        moveDown();
+        break;
+      default:
+        break;
+    }
+  }
+
   const GridContainer = styled.div`
     width: 200px;
     height: 200px;
-    border: 1px solid red;
     display: block;
     position: relative;
   `;
@@ -22,7 +48,7 @@ const Map = props => {
           bottom: position.y * 20 + 'px',
           width: '20px',
           height: '20px',
-          backgroundColor: position.type === 1 ? 'blue' : 'pink'
+          backgroundColor: position.type === 1 ? 'rgb(103, 103, 103)' : 'rgb(205, 205, 205)'
           
         }} />
     );
@@ -57,10 +83,17 @@ const Map = props => {
     }
   };
 
+  const getItems = pos => {
+    if(getPosition(pos).items) {
+      props.setFoodAmount(1);
+    }
+  }
+
   const moveUp = () => {
     const newLocation = { x: props.playerLocation.x, y: props.playerLocation.y + 1}
     if(isLegalMove(newLocation)) {
       props.setPlayerLocation(newLocation);
+      getItems(newLocation);
       isBattle(newLocation);
     }
   }
