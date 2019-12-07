@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Map from './components/Map/Map';
+import Battle from './components/Battle/Battle';
 
 function App() {
+  const [playerLocation, setPlayerLocation] = useState({x: 1, y: 1});
+  const [inBattle, setInBattle] = useState(false);
+
+  const Page = () => {
+    if (inBattle) {
+      return <Battle setInBattle={setInBattle} />;
+    } else {
+      return <Map setInBattle={setInBattle} setPlayerLocation={setPlayerLocation} playerLocation={playerLocation} />;
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <div className="App">
+    <Page />
+  </div>
   );
 }
+
+// if ()
 
 export default App;
