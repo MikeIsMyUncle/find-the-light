@@ -1,3 +1,5 @@
+import enemies from '../components/Battle/Enemies';
+
 const maps = 
 [
     { x: 0, y: 9, type: 1 },
@@ -6,7 +8,7 @@ const maps =
     { x: 3, y: 9, type: 1 },
     { x: 4, y: 9, type: 1 },
     { x: 5, y: 9, type: 1 },
-    { x: 6, y: 9, type: 2, items: [1] },
+    { x: 6, y: 9, type: 2, food: [{name: 'Healing Apple', qty: 1}] },
     { x: 7, y: 9, type: 1 },
     { x: 8, y: 9, type: 1 },
     { x: 9, y: 9, type: 1 },
@@ -75,13 +77,13 @@ const maps =
     { x: 2, y: 2, type: 2 },
     { x: 3, y: 2, type: 1 },
     { x: 4, y: 2, type: 2 },
-    { x: 5, y: 2, type: 2, enemies: [1] },
-    { x: 6, y: 2, type: 2},
+    { x: 5, y: 2, type: 2, enemies: [enemies.zarg]},
+    { x: 6, y: 2, type: 2 },
     { x: 7, y: 2, type: 2 },
     { x: 8, y: 2, type: 2 },
     { x: 9, y: 2, type: 1 },
     { x: 0, y: 1, type: 1 },
-    { x: 1, y: 1, type: 2 },
+    { x: 1, y: 1, type: 2, items: [{name: 'Flint and Steel', qty: 1}]},
     { x: 2, y: 1, type: 2 },
     { x: 3, y: 1, type: 2 },
     { x: 4, y: 1, type: 2 },

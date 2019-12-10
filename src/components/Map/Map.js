@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components';
 import positions from '../../data/maps.js';
 
@@ -30,7 +30,7 @@ const Map = props => {
       default:
         break;
     }
-  }
+  };
 
   const GridContainer = styled.div`
     width: 200px;
@@ -62,7 +62,7 @@ const Map = props => {
   const getPosition = pos => {
     return positions.find(
       position =>
-        position.x === pos.x && position.y == pos.y
+        position.x === pos.x && position.y === pos.y
     );
   }
 
@@ -79,47 +79,62 @@ const Map = props => {
 
   const isBattle = pos => {
     if (getPosition(pos).enemies) {
-      props.setInBattle(true);
+      props.startBattle(getPosition(pos).enemies);
     }
+  };
+
+  const mergeItems = (items, newItems) => {
+    const newItemList = [...props.items];
+    newItems.forEach(newItem => {
+      if (newItemList.find(item => item.name === newItem.name)) {
+        newItemList.find(item => item.name === newItem.name).qty +=
+          newItem.qty;
+      } else {
+        newItemList.push({ name: newItem.name, qty: newItem.qty });
+      }
+    })
+    return newItemList;
   };
 
   const getItems = pos => {
     if(getPosition(pos).items) {
-      props.setFoodAmount(1);
+      props.setItems(mergeItems(props.items,getPosition(pos).items));
+      delete getPosition(pos).items;
+    }
+  }
+
+
+  const getFood = pos => {
+    if(getPosition(pos).food) {
+      props.setFoods(mergeItems(props.foods,getPosition(pos).food));
+      delete getPosition(pos).food;
+    }
+  }
+
+  const move = (x, y) => {
+    const newLocation = { x: props.playerLocation.x + x, y: props.playerLocation.y + y }
+    if (isLegalMove(newLocation)) {
+      props.setPlayerLocation(newLocation);
+      getItems(newLocation);
+      getFood(newLocation);
+      isBattle(newLocation);
     }
   }
 
   const moveUp = () => {
-    const newLocation = { x: props.playerLocation.x, y: props.playerLocation.y + 1}
-    if(isLegalMove(newLocation)) {
-      props.setPlayerLocation(newLocation);
-      getItems(newLocation);
-      isBattle(newLocation);
-    }
+    move(0, 1);
   }
 
   const moveDown = () => {
-    const newLocation = { x: props.playerLocation.x, y: props.playerLocation.y - 1 }
-    if (isLegalMove(newLocation)) {
-      props.setPlayerLocation(newLocation); 
-      isBattle(newLocation);
-    }
+    move(0, -1);
   }
 
   const moveRight = () => {
-    const newLocation = { x: props.playerLocation.x + 1, y: props.playerLocation.y}
-    if (isLegalMove(newLocation)) {
-      props.setPlayerLocation(newLocation);
-      isBattle(newLocation);
-    }
+    move(1, 0);
   }
 
   const moveLeft = () => {
-    const newLocation = { x: props.playerLocation.x - 1, y: props.playerLocation.y}
-    if (isLegalMove(newLocation)) {
-      props.setPlayerLocation(newLocation); 
-      isBattle(newLocation);
-    }
+    move(-1, 0);
   }
 
   return (
