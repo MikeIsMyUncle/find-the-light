@@ -5,6 +5,10 @@ import positions from '../../data/maps.js';
 
 const Map = props => {
 
+  const mapWidth = (positions.filter(position => position.y === 0).length + 1) * 20;
+  const mapHeight = (positions.filter(position => position.x === 0).length + 1) * 20;
+
+
   useEffect(() => {
     window.addEventListener("keydown", pressedKey);
 
@@ -33,8 +37,6 @@ const Map = props => {
   };
 
   const GridContainer = styled.div`
-    width: 200px;
-    height: 200px;
     display: block;
     position: relative;
   `;
@@ -144,7 +146,9 @@ const Map = props => {
         id="outer-container"
         style={{ display: "flex", justifyContent: "center" }}
       >
-        <GridContainer>
+        <GridContainer style={{
+          width: mapWidth + 'px',
+          height: mapHeight + 'px'}}>
           {Grid}
           <div
             style={{
